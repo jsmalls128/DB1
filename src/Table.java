@@ -200,8 +200,8 @@ public class Table
         rows.addAll(tuples);
         rows.addAll(table2Rows);
         Set<Comparable []> setRows = new HashSet<>(rows);
-        List<Comparable[]> row = new ArrayList<>(setRows);
-        return new Table (name + count++, attribute, domain, key, row);
+        rows = new ArrayList<>(setRows);
+        return new Table (name + count++, attribute, domain, key, rows);
     } // union
 
     /************************************************************************************
