@@ -278,7 +278,7 @@ public class Table
 
         List <Comparable []> rows = new ArrayList <> ();
         List <Comparable []> row = new ArrayList <> ();
-        
+  
         rows.addAll(tuples);
         for(int i = 0; i < rows.size(); i++){
         	row.add(extract(tuples.get(i), attrs));
@@ -438,13 +438,11 @@ public class Table
 
         if (! compatible (table2)) return null;
 
-
         List <Comparable []> rows = new ArrayList <> ();
         List <Comparable []> table2Rows = table2.tuples;
 
         rows.addAll(tuples);
         rows.removeAll(table2Rows);
-
 
         return new Table (name + count++, attribute, domain, key, rows);
 
