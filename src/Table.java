@@ -350,15 +350,8 @@ public class Table
 
         out.println ("RA> " + name + ".select (" + keyVal + ")");
 
-
-
         List <Comparable []> rows = new ArrayList <> ();
-
-
-
-        //  T O   B E   I M P L E M E N T E D 
-
-
+	rows.add(index.get(keyVal));
 
         return new Table (name + count++, attribute, domain, key, rows);
 
