@@ -8,8 +8,6 @@
 
  */
 
-
-
 import java.io.*;
 
 import java.util.*;
@@ -277,20 +275,12 @@ public class Table
         String [] newKey    = (Arrays.asList (attrs).containsAll (Arrays.asList (key))) ? key : attrs;
 
         List <Comparable []> rows = new ArrayList <> ();
-        List <Comparable []> row = new ArrayList <> ();
   
-        rows.addAll(tuples);
-        for(int i = 0; i < rows.size(); i++){
-        	row.add(extract(tuples.get(i), attrs));
+        for(int i = 0; i < tuples.size(); i++){
+        	rows.add(extract(tuples.get(i), attrs));
         }
-       // rows.addAll(tuple);
 
-        
-        //  T O   B E   I M P L E M E N T E D 
-
-
-
-        return new Table (name + count++, attrs, colDomain, newKey, row);
+        return new Table (name + count++, attrs, colDomain, newKey, rows);
 
     } // project
 
@@ -387,16 +377,10 @@ public class Table
 
         List <Comparable []> rows = new ArrayList <> ();
 
-        List<Comparable []> table2Rows = table2.tuples;
-
-        //  T O   B E   I M P L E M E N T E D 
-
         rows.addAll(tuples);
-
-        rows.addAll(table2Rows);
+        rows.addAll(table2.tuples);
 
         Set<Comparable []> setRows = new HashSet<>(rows);
-
         rows = new ArrayList<>(setRows);
 
         return new Table (name + count++, attribute, domain, key, rows);
