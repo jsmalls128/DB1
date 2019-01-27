@@ -8,6 +8,8 @@
 
  */
 
+
+
 import java.io.*;
 
 import java.util.*;
@@ -275,12 +277,20 @@ public class Table
         String [] newKey    = (Arrays.asList (attrs).containsAll (Arrays.asList (key))) ? key : attrs;
 
         List <Comparable []> rows = new ArrayList <> ();
+        List <Comparable []> row = new ArrayList <> ();
   
-        for(int i = 0; i < tuples.size(); i++){
-        	rows.add(extract(tuples.get(i), attrs));
+        rows.addAll(tuples);
+        for(int i = 0; i < rows.size(); i++){
+        	row.add(extract(tuples.get(i), attrs));
         }
+       // rows.addAll(tuple);
 
-        return new Table (name + count++, attrs, colDomain, newKey, rows);
+        
+        //  T O   B E   I M P L E M E N T E D 
+
+
+
+        return new Table (name + count++, attrs, colDomain, newKey, row);
 
     } // project
 
@@ -340,8 +350,15 @@ public class Table
 
         out.println ("RA> " + name + ".select (" + keyVal + ")");
 
+
+
         List <Comparable []> rows = new ArrayList <> ();
-	rows.add(index.get(keyVal));
+
+
+
+        //  T O   B E   I M P L E M E N T E D 
+
+
 
         return new Table (name + count++, attribute, domain, key, rows);
 
@@ -377,10 +394,16 @@ public class Table
 
         List <Comparable []> rows = new ArrayList <> ();
 
+        List<Comparable []> table2Rows = table2.tuples;
+
+        //  T O   B E   I M P L E M E N T E D 
+
         rows.addAll(tuples);
-        rows.addAll(table2.tuples);
+
+        rows.addAll(table2Rows);
 
         Set<Comparable []> setRows = new HashSet<>(rows);
+
         rows = new ArrayList<>(setRows);
 
         return new Table (name + count++, attribute, domain, key, rows);
@@ -469,7 +492,20 @@ public class Table
 
         List <Comparable []> rows = new ArrayList <> ();
 
-
+        List <Comparable []> t_tup = tuples;
+        List <Comparable []> u_tup = table2.tuples;
+        
+        int counter = 0;
+        for(Comparable[] t : t_tup) {
+        	KeyType t_key = new KeyType(extract(t, t_attrs));
+        	for(Comparable[] u : u_tup) {
+        		KeyType	u_key = new KeyType(extract(u, u_attrs));
+        		if(t_key.compareTo(u_key)==0)
+        			rows.add(ArrayUtil.concat (t,u));
+        	}
+        }
+        
+        	
 
         //  T O   B E   I M P L E M E N T E D 
 
@@ -515,13 +551,35 @@ public class Table
 
 
 
-        //  T O   B E   I M P L E M E N T E D 
+        List <Comparable []> t_tup = tuples;
+        List <Comparable []> u_tup = table2.tuples;
+        
+        for (String s : attribute) {
+        	String[] str = new String[1];
+        	str[0] = s;
+        	for (String a : table2.attribute) {
+        		String[] atr = new String[1];
+        		atr[0] = a;
+        		if(s.compareTo(a)==0) {
+        			for (Comparable[] t : t_tup) {
+        				KeyType t_key = new KeyType(extract(t, str));
+        				for (Comparable[] u : u_tup) {
+        					KeyType u_key = new KeyType(extract(u,atr));
+        					if (t_key.compareTo(u_key)==0){
+        						rows.add(u);
+        					}
+        				}
+        			}
+        		}
+        		break;
+        	}
+        }
 
 
 
         // FIX - eliminate duplicate columns
 
-        return new Table (name + count++, ArrayUtil.concat (attribute, table2.attribute),
+        return new Table (name + count++, attribute,
 
                                           ArrayUtil.concat (domain, table2.domain), key, rows);
 
