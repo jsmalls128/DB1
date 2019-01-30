@@ -8,8 +8,6 @@
 
  */
 
-
-
 import java.io.*;
 
 import java.util.*;
@@ -259,7 +257,7 @@ public class Table
      *
 
      * @param attributes  the attributes to project onto
-
+	 * @author Jamal Ballard
      * @return  a table of projected tuples
 
      */
@@ -277,20 +275,12 @@ public class Table
         String [] newKey    = (Arrays.asList (attrs).containsAll (Arrays.asList (key))) ? key : attrs;
 
         List <Comparable []> rows = new ArrayList <> ();
-        List <Comparable []> row = new ArrayList <> ();
   
-        rows.addAll(tuples);
-        for(int i = 0; i < rows.size(); i++){
-        	row.add(extract(tuples.get(i), attrs));
+        for(int i = 0; i < tuples.size(); i++){
+        	rows.add(extract(tuples.get(i), attrs));
         }
-       // rows.addAll(tuple);
 
-        
-        //  T O   B E   I M P L E M E N T E D 
-
-
-
-        return new Table (name + count++, attrs, colDomain, newKey, row);
+        return new Table (name + count++, attrs, colDomain, newKey, rows);
 
     } // project
 
@@ -339,7 +329,7 @@ public class Table
      *
 
      * @param keyVal  the given key value
-
+	 * @author Ayeshka Wickramasuriya
      * @return  a table with the tuple satisfying the key predicate
 
      */
@@ -350,15 +340,8 @@ public class Table
 
         out.println ("RA> " + name + ".select (" + keyVal + ")");
 
-
-
         List <Comparable []> rows = new ArrayList <> ();
-
-
-
-        //  T O   B E   I M P L E M E N T E D 
-
-
+        rows.add(index.get(keyVal));
 
         return new Table (name + count++, attribute, domain, key, rows);
 
@@ -377,7 +360,7 @@ public class Table
      *
 
      * @param table2  the rhs table in the union operation
-
+	 * @author Jamal Ballard
      * @return  a table representing the union
 
      */
@@ -394,16 +377,10 @@ public class Table
 
         List <Comparable []> rows = new ArrayList <> ();
 
-        List<Comparable []> table2Rows = table2.tuples;
-
-        //  T O   B E   I M P L E M E N T E D 
-
         rows.addAll(tuples);
-
-        rows.addAll(table2Rows);
+        rows.addAll(table2.tuples);
 
         Set<Comparable []> setRows = new HashSet<>(rows);
-
         rows = new ArrayList<>(setRows);
 
         return new Table (name + count++, attribute, domain, key, rows);
@@ -425,7 +402,7 @@ public class Table
      *
 
      * @param table2  The rhs table in the minus operation
-
+	 * @author Jamal Ballard
      * @return  a table representing the difference
 
      */
@@ -469,7 +446,7 @@ public class Table
      * @param attribute2  the attributes of table2 to be compared (Primary Key)
 
      * @param table2      the rhs table in the join operation
-
+     * @author Jon Ross Ingley
      * @return  a table with tuples satisfying the equality predicate
 
      */
@@ -494,8 +471,8 @@ public class Table
 
         List <Comparable []> t_tup = tuples;
         List <Comparable []> u_tup = table2.tuples;
-        
-        int counter = 0;
+
+         int counter = 0;
         for(Comparable[] t : t_tup) {
         	KeyType t_key = new KeyType(extract(t, t_attrs));
         	for(Comparable[] u : u_tup) {
@@ -504,11 +481,6 @@ public class Table
         			rows.add(ArrayUtil.concat (t,u));
         	}
         }
-        
-        	
-
-        //  T O   B E   I M P L E M E N T E D 
-
 
 
         return new Table (name + count++, ArrayUtil.concat (attribute, table2.attribute),
@@ -534,7 +506,7 @@ public class Table
      *
 
      * @param table2  the rhs table in the join operation
-
+	 * @author Jon Ross Ingley
      * @return  a table with tuples satisfying the equality predicate
 
      */
@@ -545,16 +517,12 @@ public class Table
 
         out.println ("RA> " + name + ".join (" + table2.name + ")");
 
-
-
         List <Comparable []> rows = new ArrayList <> ();
-
-
 
         List <Comparable []> t_tup = tuples;
         List <Comparable []> u_tup = table2.tuples;
-        
-        for (String s : attribute) {
+
+         for (String s : attribute) {
         	String[] str = new String[1];
         	str[0] = s;
         	for (String a : table2.attribute) {
@@ -576,12 +544,9 @@ public class Table
         }
 
 
-
         // FIX - eliminate duplicate columns
 
-        return new Table (name + count++, attribute,
-
-                                          ArrayUtil.concat (domain, table2.domain), key, rows);
+        return new Table (name + count++, attribute, ArrayUtil.concat (domain, table2.domain), key, rows);
 
     } // join
 
@@ -925,7 +890,7 @@ public class Table
 
             if ( ! matched) {
 
-                out.println ("match: domain not found for " + column [j]);
+             //   out.println ("match: domain not found for " + column [j]);
 
             } // if
 
